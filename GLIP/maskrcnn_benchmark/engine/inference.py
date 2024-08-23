@@ -223,7 +223,6 @@ def create_queries_and_maps(labels, label_list, additional_labels = None, cfg = 
     separation_tokens = cfg.DATASETS.SEPARATION_TOKENS
     
     caption_prompt = cfg.DATASETS.CAPTION_PROMPT
-    caption_prompt = None
     if caption_prompt is not None and isinstance(caption_prompt, str):
         caption_prompt = load_from_yaml_file(caption_prompt)
     use_caption_prompt = cfg.DATASETS.USE_CAPTION_PROMPT and caption_prompt is not None

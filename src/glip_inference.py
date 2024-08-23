@@ -64,6 +64,8 @@ def glip_inference(glip_demo, save_dir, part_names, sam_predictor, num_views=10,
     pred_dir = os.path.join(save_dir, "glip_pred")
     os.makedirs(pred_dir, exist_ok = True)
     seg_masks = [[] for _ in range(num_views)]
+    cat_ids = [[] for _ in range(num_views)]
+    bboxs = [[] for _ in range(num_views)]
     preds = [[] for _ in range(num_views)]
     for i in range(num_views):
         image = load_img("%s/rendered_img/%d.png" % (save_dir, i))
@@ -87,5 +89,7 @@ def glip_inference(glip_demo, save_dir, part_names, sam_predictor, num_views=10,
             bbox, cat_id = pred
             mask = segment(sam_predictor, bbox)
             seg_masks[i].append((mask, cat_id, bbox))
+            #cat_ids[i].append(cat_id)
+            #bboxs[i].append(bbox)
             
-    return seg_masks
+    return seg_masks#, cat_ids, bboxs

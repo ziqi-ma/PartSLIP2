@@ -1,4 +1,4 @@
-name: partslip
+name: partslip2
 channels:
   - anaconda
   - conda-forge
@@ -45,4 +45,3 @@ dependencies:
       - tensorboardX==2.6
       - timm==0.9.2
       - transformers==4.30.1
-

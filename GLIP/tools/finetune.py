@@ -125,12 +125,12 @@ def train(cfg, local_rank, distributed, zero_shot, skip_optimizer_resume=False, 
     if zero_shot:
         return model
     
-    # if is_main_process():
-    #     for name, p in model.named_parameters():
-    #         if p.requires_grad:
-    #             print(name, " : Not Frozen")
-    #         else:
-    #             print(name, " : Frozen")
+    if is_main_process():
+        for name, p in model.named_parameters():
+            if p.requires_grad:
+                print(name, " : Not Frozen")
+            else:
+                print(name, " : Frozen")
     report_freeze_options(cfg)
     if cfg.DATASETS.ALTERNATIVE_TRAINING:
         alternative_train(

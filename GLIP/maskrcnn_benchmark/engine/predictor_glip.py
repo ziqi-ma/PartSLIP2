@@ -1,7 +1,6 @@
 import cv2
 import torch
 import re
-import os
 import numpy as np
 from typing import List, Union
 import nltk
@@ -19,9 +18,8 @@ from maskrcnn_benchmark.modeling.roi_heads.mask_head.inference import Masker
 from maskrcnn_benchmark.utils import cv2_util
 
 engine = inflect.engine()
-if not os.path.exists("/root/nltk_data/"):
-    nltk.download('punkt')
-    nltk.download('averaged_perceptron_tagger')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
 
 import timeit
 

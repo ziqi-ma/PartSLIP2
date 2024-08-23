@@ -11,7 +11,7 @@ from glip_inference import draw_rectangle, load_img
 def get_point_iou(pc1, pc2):
     I = np.logical_and(pc1, pc2)
     U = np.logical_or(pc1, pc2)
-    if U.sum() < 10:
+    if U.sum() == 0:
         return 0
     return I.sum() / U.sum()
 
@@ -42,7 +42,8 @@ def get_union(f, x): # union-find
     return f[x]
 
 def calc_sp_connectivity(xyz, superpoints, thr=0.02): 
-# calculate connectivity (bounding box adjacency) between superpoints
+    # calculate connectivity (bounding box adjacency) between superpoints
+    xyz = xyz.numpy()
     n = len(superpoints)
     X_min, X_max = [], []
     for i in range(n):
@@ -141,6 +142,7 @@ def bbox2seg(xyz, superpoint, masks, screen_coor_all, point_idx_all, part_names,
         if idx == -1:
             idx = np.argmax(sem_score[:, i])
         sem_seg[superpoint[i]] = idx
+
     if visualize:
         os.makedirs("%s/semantic_seg" % save_dir, exist_ok=True)  
         for j in range(n_category):

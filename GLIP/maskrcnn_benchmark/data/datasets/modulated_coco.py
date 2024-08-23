@@ -367,7 +367,7 @@ class CocoDetection(data.Dataset):
 
         meta = coco.loadImgs(img_id)[0]
         path = meta['file_name']
-        img = pil_loader(path)
+        img = pil_loader(os.path.join(self.root, path))
 
         if self.transform is not None:
             img = self.transform(img)

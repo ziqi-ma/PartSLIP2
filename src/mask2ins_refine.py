@@ -1,5 +1,5 @@
 import numpy as np
-from utils import save_colored_pc
+from src.utils import save_colored_pc
 from scipy.stats import mode
 import os
 import random
@@ -9,8 +9,8 @@ import torch.nn.functional as F
 from scipy.optimize import linear_sum_assignment
 from segment_anything import sam_model_registry, SamAutomaticMaskGenerator, SamPredictor
 import matplotlib.pyplot as plt
-from glip_inference import glip_inference, load_model
-from utils import get_iou
+from src.glip_inference import glip_inference, load_model
+from src.utils import get_iou
 
 def load_img(file_name):
     pil_image = Image.open(file_name).convert("RGB")
@@ -43,15 +43,15 @@ def calc_sp_connectivity(xyz, superpoints, thr=0.05):
 
 def glip_infer(category, save_dir, part_names, num_views, point_idx_all, device, img_dir):
     config ="./GLIP/configs/glip_Swin_L_pt.yaml"
-    weight_path = "./models/%s.pth" % category
+    weight_path = "/data/ziqi/checkpoints/semseg3d/glip_large_model.pth" #"./models/%s.pth" % category
     glip_demo = load_model(config, weight_path)
 
     model_type = "vit_h"
-    sam_checkpoint = "./models/sam_vit_h_4b8939.pth"
+    sam_checkpoint = "/data/ziqi/checkpoints/semseg3d/sam_vit_h_4b8939.pth"
     sam = sam_model_registry[model_type](checkpoint=sam_checkpoint)
     sam.to(device="cuda:0")
     sam_predictor = SamPredictor(sam)
-    masks_all_view, cat_ids, bboxs = glip_inference(glip_demo, save_dir, img_dir, part_names, sam_predictor, num_views)
+    masks_all_view, cat_ids, bboxs = glip_inference(glip_demo, img_dir, part_names, sam_predictor, num_views)
     
     pixel_instance_id_all_views = []
     for i in range(num_views):
@@ -175,7 +175,7 @@ def sem2ins(xyz, rgb, screen_coor_all, point_idx_all, part_names,
     regenerate_sam = True
     device = torch.device("cuda:0")
     category, model = save_dir.split("/")[-2], save_dir.split("/")[-1]       
-    point_instance_id = np.load(f"./data/test/{category}/{model}/label.npy", allow_pickle=True).item()["instance_seg"]
+    point_instance_id = np.load(f"/data/ziqi/partnet-mobility/test/{category}/{model}/label.npy", allow_pickle=True).item()["instance_seg"]
     point_instance_id += 1
     point_instance_id_pad = np.concatenate([point_instance_id, [-1]])
     point_instance_id_pad = torch.as_tensor(point_instance_id_pad, device=device)
@@ -254,6 +254,7 @@ def sem2ins(xyz, rgb, screen_coor_all, point_idx_all, part_names,
     masks, cat_ids, bboxs = mask_cat_ids
     instances = []
     superpoint_logits_np = superpoints_logits.detach().cpu().numpy()
+    xyz = xyz.numpy()
     connectivity = calc_sp_connectivity(xyz, superpoints, 0.05)
     for k in range(num_instance):
         ins_sp = np.where(np.argmax(superpoint_logits_np, -1) == k)[0]
@@ -278,7 +279,7 @@ def sem2ins(xyz, rgb, screen_coor_all, point_idx_all, part_names,
     sem_seg = load_partslip_semantic(category, model, part_names, xyz)
     sem_seg_instance = np.zeros([len(instances)])
     for i, ins in enumerate(instances):
-        sem_seg_instance[i] = mode(sem_seg[ins])[0][0]
+        sem_seg_instance[i] = mode(sem_seg[ins])[0]
 
     flags = [False for _ in range(len(instances))]
     for i in range(num_view):

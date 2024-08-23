@@ -6,10 +6,43 @@ import numpy as np
 from src.utils import normalize_pc
 from src.render_pc import render_pc
 from src.gen_superpoint import gen_superpoint
+import time
+
+def rotate_pts(pts, angles, device=None): # list of points as a tensor, N*3
+
+    roll = angles[0].reshape(1)
+    yaw = angles[1].reshape(1)
+    pitch = angles[2].reshape(1)
+
+    tensor_0 = torch.zeros(1).to(device)
+    tensor_1 = torch.ones(1).to(device)
+
+    RX = torch.stack([
+                    torch.stack([tensor_1, tensor_0, tensor_0]),
+                    torch.stack([tensor_0, torch.cos(roll), -torch.sin(roll)]),
+                    torch.stack([tensor_0, torch.sin(roll), torch.cos(roll)])]).reshape(3,3)
+
+    RY = torch.stack([
+                    torch.stack([torch.cos(yaw), tensor_0, torch.sin(yaw)]),
+                    torch.stack([tensor_0, tensor_1, tensor_0]),
+                    torch.stack([-torch.sin(yaw), tensor_0, torch.cos(yaw)])]).reshape(3,3)
+
+    RZ = torch.stack([
+                    torch.stack([torch.cos(pitch), -torch.sin(pitch), tensor_0]),
+                    torch.stack([torch.sin(pitch), torch.cos(pitch), tensor_0]),
+                    torch.stack([tensor_0, tensor_0, tensor_1])]).reshape(3,3)
+
+    R = torch.mm(RZ, RY)
+    R = torch.mm(R, RX)
+    if device == "cuda":
+        R = R.cuda()
+    pts_new = torch.mm(pts, R.T)
+    return pts_new
 
 def Infer(input_pc_file, category, part_names, zero_shot=False, save_dir="tmp"):
     
     print("[creating tmp dir...]")
+    obj_path = "/".join(input_pc_file.split("/")[:-1])
     if torch.cuda.is_available():
         device = torch.device("cuda:0")
         torch.cuda.set_device(device)
@@ -20,16 +53,20 @@ def Infer(input_pc_file, category, part_names, zero_shot=False, save_dir="tmp"):
     
     print("[normalizing input point cloud...]")
     xyz, rgb = normalize_pc(input_pc_file, save_dir, io, device)
+    # apply rotation
+    rot = torch.load(f"{obj_path}/rand_rotation.pt")
+    rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
     
     print("[rendering input point cloud...]")
-    img_dir, pc_idx, screen_coords, num_views = render_pc(xyz, rgb, save_dir, device)
+    img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
     
     # print('[generating superpoints...]')
-    superpoint = gen_superpoint(xyz, rgb, visualize=True, save_dir=save_dir)
+    superpoint = gen_superpoint(rotated_pts, rgb, visualize=True, save_dir=save_dir)
     
     print("[finish!]")
     
 if __name__ == "__main__":
+    stime = time.time()
     partnete_meta = json.load(open("PartNetE_meta.json")) 
     categories = partnete_meta.keys()
     categories_list = [["Box", "Bucket", "Clock", "CoffeeMachine"],
@@ -43,10 +80,11 @@ if __name__ == "__main__":
     # categories = ["Bottle", "Chair", "Display", "Door"]
     # categories = ["Knife", "Lamp", "StorageFurniture", "Table"]
     # categories = ["KitchenPot", "Oven", "Suitcase", "Toaster"]
-    categories = categories_list[5]
+    categories = ["Bucket"]
     for category in categories:  
-        models = os.listdir(f"./data/test/{category}") # list of models
+        models = os.listdir(f"/data/ziqi/partnet-mobility/test/{category}")[:10] # list of models
         # models = sorted(models)
         for model in models:
-            Infer(f"./data/test/{category}/{model}/pc.ply", category, partnete_meta[category], zero_shot=False, save_dir=f"./data/img_sp/{category}/{model}")
-        
+            Infer(f"/data/ziqi/partnet-mobility/test/{category}/{model}/pc.ply", category, partnete_meta[category], zero_shot=False, save_dir=f"./data/img_sp/{category}/{model}")
+    etime = time.time()
+    print(etime-stime)
