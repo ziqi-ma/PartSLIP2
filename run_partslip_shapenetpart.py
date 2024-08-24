@@ -121,7 +121,7 @@ def Infer(category, model, xyz, rot, gt, part_names, zero_shot=True, save_dir="t
     
 if __name__ == "__main__":
     stime = time.time()
-    categories = ["airplane"]
+    categories = ["lamp"]
     cat2part = {'airplane': ['body','wing','tail','engine or frame'], 'bag': ['handle','body'], 'cap': ['panels or crown','visor or peak'], 
             'car': ['roof','hood','wheel or tire','body'],
             'chair': ['back','seat pad','leg','armrest'], 'earphone': ['earcup','headband','data wire'], 
@@ -130,15 +130,14 @@ if __name__ == "__main__":
             'laptop': ['keyboard','screen or monitor'], 
             'motorbike': ['gas tank','seat','wheel','handles or handlebars','light','engine or frame'], 'mug': ['handle', 'cup'], 
             'pistol': ['barrel', 'handle', 'trigger and guard'], 
-            'rocket': ['body','fin','nose cone'], 'skateboard': ['wheel','deck','belt for foot'], 'table': ['desktop','leg or support','drawer'],
-            'Bottle': ['lid', 'other']}
+            'rocket': ['body','fin','nose cone'], 'skateboard': ['wheel','deck','belt for foot'], 'table': ['desktop','leg or support','drawer']}
     for category in categories:
         accs = []
         ious = []
         part_names = cat2part[category]
         xyz, label, rotation, sample_idxs = load_data_partseg('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            acc, iou = Infer(category, sample_idxs[i].item(), xyz[i,:,:], rotation[i,:], label[i,:,:], part_names, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i].item()}")
+            acc, iou = Infer(category, sample_idxs[i].item(), xyz[i,:,:], rotation[i,:], label[i,:], part_names, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i].item()}")
             accs.append(acc)
             ious.append(iou)
         mean_acc = np.mean(accs)

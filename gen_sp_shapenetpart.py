@@ -76,6 +76,7 @@ def load_data_partseg(data_path, class_choice):
 
     # take 5 random (but randomness is fixed)
     random_indices = torch.randint(0, all_data.shape[0], (10,))
+    os.makedirs(f"./data/img_sp/{class_choice}", exist_ok=True)
     torch.save(random_indices, f"./data/img_sp/{class_choice}/rand_idxs.pt")
     sub_data = all_data[random_indices]
     sub_seg = all_seg[random_indices]
@@ -105,12 +106,12 @@ def Infer(xyz, rot, save_dir="tmp"):
     img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
     
     # print('[generating superpoints...]')
-    superpoint = gen_superpoint(rotated_pts, rgb, visualize=False, save_dir=save_dir)
+    superpoint = gen_superpoint(rotated_pts, rgb, visualize=True, save_dir=save_dir)
     
     print("[finish!]")
     
 if __name__ == "__main__":
-    stime = time.time()
+    
     categories_list = {'airplane': 0, 'bag': 1, 'cap': 2, 'car': 3, 'chair': 4, 
                        'earphone': 5, 'guitar': 6, 'knife': 7, 'lamp': 8, 'laptop': 9, 
                        'motorbike': 10, 'mug': 11, 'pistol': 12, 'rocket': 13, 'skateboard': 14, 'table': 15}
@@ -119,10 +120,13 @@ if __name__ == "__main__":
     # categories = ["Bottle", "Chair", "Display", "Door"]
     # categories = ["Knife", "Lamp", "StorageFurniture", "Table"]
     # categories = ["KitchenPot", "Oven", "Suitcase", "Toaster"]
-    categories = ["airplane"]
+    categories = ['chair','earphone','guitar','knife','lamp','laptop','motorbike',
+                  'mug','pistol','rocket','skateboard']
     for category in categories:  
+        stime = time.time()
         xyz, label, rotation, sample_idxs = load_data_partseg('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            Infer(xyz[i,:,:], category, rotation[i,:], save_dir=f"./data/img_sp/{category}/{sample_idxs[i].item()}")
-    etime = time.time()
-    print(etime-stime)
+            Infer(xyz[i,:,:], rotation[i,:], save_dir=f"./data/img_sp/{category}/{sample_idxs[i].item()}")
+        etime = time.time()
+        print(category)
+        print(etime-stime)

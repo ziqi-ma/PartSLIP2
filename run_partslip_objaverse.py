@@ -10,6 +10,8 @@ from src.bbox2seg import bbox2seg
 from gen_sp import rotate_pts
 import time
 from segment_anything import sam_model_registry, SamPredictor
+import open3d as o3d
+
 
 def compute_iou(pred, gt):
     num_parts = int(gt.max()+1)
@@ -25,19 +27,18 @@ def compute_iou(pred, gt):
     mean_iou = np.mean(ious)
     return mean_iou
 
-def Infer(input_pc_file, category, model, part_names, zero_shot=True, save_dir="tmp"):
+def Infer(obj_dir, class_uid, zero_shot=True, save_dir="tmp"):
     if zero_shot:
         config ="GLIP/configs/glip_Swin_L.yaml"
         weight_path = "/data/ziqi/checkpoints/semseg3d/glip_large_model.pth"
-        print("-----Zero-shot inference of %s-----" % input_pc_file)
+        print("-----Zero-shot inference of %s-----" % class_uid)
     else:
         config ="GLIP/configs/glip_Swin_L_pt.yaml"
         weight_path = "./models/%s.pth" % category
-        print("-----Few-shot inference of %s-----" % input_pc_file)
+        print("-----Few-shot inference of %s-----" % class_uid)
         
     print("[loading GLIP model...]")
     glip_demo = load_model(config, weight_path)
-    obj_path = "/".join(input_pc_file.split("/")[:-1])
 
     print("[creating tmp dir...]")
     if torch.cuda.is_available():
@@ -50,13 +51,24 @@ def Infer(input_pc_file, category, model, part_names, zero_shot=True, save_dir="
     print(save_dir)
     
     print("[normalizing input point cloud...]")
-    xyz, rgb = normalize_pc(input_pc_file, save_dir, io, device)
+    pcd = o3d.io.read_point_cloud(f"{obj_dir}/points5000.pcd")
+    xyz = np.asarray(pcd.points)
+    xyz = xyz - xyz.mean(axis=0)
+    xyz = xyz / np.linalg.norm(xyz, ord=2, axis=1).max().item()
+    rgb = np.asarray(pcd.colors)
+    
     # apply rotation
-    rot = torch.load(f"{obj_path}/rand_rotation.pt")
+    rot = torch.load(f"{obj_dir}/rand_rotation.pt")
     rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
     
     print("[rendering input point cloud...]")
     img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
+
+    with open(f"{obj_dir}/label_map.json") as f:
+        mapping = json.load(f)
+    part_names = []
+    for i in range(len(mapping)):
+        part_names.append(mapping[str(i+1)]) # label starts from 1
     
     print("[glip infrence...]")
     SAM_ENCODER_VERSION = "vit_h"
@@ -67,11 +79,11 @@ def Infer(input_pc_file, category, model, part_names, zero_shot=True, save_dir="
     masks = glip_inference(glip_demo, save_dir, part_names, sam_predictor, num_views=num_views)
     
     print('[generating superpoints...]')
-    superpoint = np.load(f"/home/ziqi/Repos/PartSLIP2/data/img_sp/{category}/{model}/sp.npy", allow_pickle=True)
+    superpoint = np.load(f"/home/ziqi/Repos/PartSLIP2/data/img_sp/{class_uid}/sp.npy", allow_pickle=True)
     
     print('[converting bbox to 3D segmentation...]')
     sem_seg, _ = bbox2seg(rotated_pts, superpoint, masks, screen_coords, pc_idx, part_names, save_dir, solve_instance_seg=False, num_view=num_views)
-    gt = np.load(f"/data/ziqi/partnet-mobility/test/{category}/{model}/label.npy", allow_pickle=True).item()["semantic_seg"]
+    gt = np.load(f"{obj_dir}/labels.npy") - 1 # now -1 becomes unlabeled, 0-k-1 are classes, save as prediction
     acc = np.sum(sem_seg==gt)/gt.shape[0]
     iou = compute_iou(sem_seg, gt)
     
@@ -79,33 +91,41 @@ def Infer(input_pc_file, category, model, part_names, zero_shot=True, save_dir="
     return acc, iou
     
 if __name__ == "__main__":
-    
-    partnete_meta = json.load(open("PartNetE_meta.json")) 
-    categories = ["KitchenPot","Knife","Lamp","Laptop","Lighter","Microwave","Mouse",
-                  "Oven","Pen"]
-    categories = ["Phone","Pliers","Printer","Refrigerator","Remote","Safe", "Scissors"]
-    categories = ["Stapler","StorageFurniture","Suitcase"]
-    categories = ["Keyboard"]
-    for category in categories:
-        stime = time.time()
-        accs = []
-        ious = []
-        models = os.listdir(f"/data/ziqi/partnet-mobility/test/{category}") # list of models
-        if len(models) >= 10:
-            chosen = np.load(f"./data/img_sp/{category}/idxs.npy")
-            chosen_models = [models[i] for i in chosen]
+    stime = time.time()
+    data_path = '/data/ziqi/objaverse/holdout'
+    split = "unseen"#"seenclass"
+    class_uids = os.listdir(f"{data_path}/{split}")
+    iou_list = []
+    acc_list = []
+    cat_iou = {}
+    cat_acc = {}
+    for class_uid in class_uids:  
+        obj_dir = f"{data_path}/{split}/{class_uid}"
+        cat = class_uid.split("_")[0]
+        acc, iou = Infer(obj_dir, class_uid, zero_shot=True, save_dir=f"./result_ps/{class_uid}")
+        iou_list += [iou]
+        acc_list += [acc]
+        if cat not in cat_acc:
+            cat_acc[cat] = [acc]
         else:
-            chosen_models = models
-        for model in chosen_models:
-            acc, iou = Infer(f"/data/ziqi/partnet-mobility/test/{category}/{model}/pc.ply", category, model, partnete_meta[category], zero_shot=True, save_dir=f"./result_ps/{category}/{model}")
-            accs.append(acc)
-            ious.append(iou)
-        mean_acc = np.mean(accs)
-        mean_iou = np.mean(ious)
-        print(f"{category} acc: {mean_acc}, iou: {mean_iou}")
-        etime = time.time()
-        print(etime-stime)
-        f = open("inf2.txt", "a")
-        f.write(f"{category} acc: {mean_acc}, iou: {mean_iou}, time {etime-stime}, total {len(chosen_models)}\n")
-        f.close()
+            cat_acc[cat].append(acc)
+
+        if cat not in cat_iou:
+            cat_iou[cat] = [iou.item()]
+        else:
+            cat_iou[cat].append(iou.item())
+    mean_cat_accs = []
+    mean_cat_ious = []
+    for cat in cat_acc:
+        mean_cat_accs.append(np.mean(cat_acc[cat]))
+    for cat in cat_iou:
+        mean_cat_ious.append(np.mean(cat_iou[cat]))
+    cat_mean_acc = np.mean(mean_cat_accs)
+    cat_mean_iou = np.mean(mean_cat_ious)
+    miou = np.mean(iou_list)
+    macc = np.mean(acc_list)
+    print(f"instance mean iou: {miou}, instance mean acc: {macc}, category mean iou: {cat_mean_iou}, category mean acc: {cat_mean_acc}")
+    etime = time.time()
+    print(etime-stime)
+    print(etime-stime/len(class_uids))
         

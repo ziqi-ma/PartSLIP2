@@ -66,7 +66,7 @@ def Infer(input_pc_file, category, part_names, zero_shot=False, save_dir="tmp"):
     print("[finish!]")
     
 if __name__ == "__main__":
-    stime = time.time()
+    
     partnete_meta = json.load(open("PartNetE_meta.json")) 
     categories = partnete_meta.keys()
     categories_list = [["Box", "Bucket", "Clock", "CoffeeMachine"],
@@ -80,11 +80,28 @@ if __name__ == "__main__":
     # categories = ["Bottle", "Chair", "Display", "Door"]
     # categories = ["Knife", "Lamp", "StorageFurniture", "Table"]
     # categories = ["KitchenPot", "Oven", "Suitcase", "Toaster"]
-    categories = ["Bucket"]
+    #categories = ["Oven","Pen","Phone","Pliers","Printer","Refrigerator","Remote",
+                  #"Safe","Scissors","Stapler","StorageFurniture","Suitcase"]
+    categories = ["KitchenPot","Knife","Lamp","Laptop","Lighter","Microwave","Mouse",
+                  "Oven","Pen"]
+    categories = ["Phone","Pliers","Printer","Refrigerator","Remote","Safe", "Scissors"]
+
     for category in categories:  
+        stime = time.time()
         models = os.listdir(f"/data/ziqi/partnet-mobility/test/{category}")[:10] # list of models
+        if len(models) >= 10:
+            chosen = np.random.choice(len(models), 10, replace=False)
+            chosen_models = [models[i] for i in chosen]
+            os.makedirs(f"./data/img_sp/{category}", exist_ok=True)
+            np.save(f"./data/img_sp/{category}/idxs.npy", chosen)
+        else:
+            chosen_models = models
         # models = sorted(models)
-        for model in models:
+        for model in chosen_models:
             Infer(f"/data/ziqi/partnet-mobility/test/{category}/{model}/pc.ply", category, partnete_meta[category], zero_shot=False, save_dir=f"./data/img_sp/{category}/{model}")
-    etime = time.time()
-    print(etime-stime)
+        etime = time.time()
+        print(category)
+        print(etime-stime)
+        f = open("prep2.txt", "a")
+        f.write(f"{category} sp:{etime-stime}, total {len(chosen_models)}\n")
+        f.close()
