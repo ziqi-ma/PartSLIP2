@@ -18,10 +18,10 @@ def compute_iou(pred, gt):
         I = np.logical_and(pred==i, gt==i).sum()
         U = np.logical_or(pred==i, gt==i).sum()
         if U == 0:
-            iou = 1
+            pass
         else:
             iou = I / U
-        ious.append(iou)
+            ious.append(iou)
     mean_iou = np.mean(ious)
     return mean_iou
 
@@ -81,11 +81,14 @@ def Infer(input_pc_file, category, model, part_names, zero_shot=True, save_dir="
 if __name__ == "__main__":
     
     partnete_meta = json.load(open("PartNetE_meta.json")) 
-    categories = ["KitchenPot","Knife","Lamp","Laptop","Lighter","Microwave","Mouse",
-                  "Oven","Pen"]
-    categories = ["Phone","Pliers","Printer","Refrigerator","Remote","Safe", "Scissors"]
-    categories = ["Stapler","StorageFurniture","Suitcase"]
-    categories = ["Keyboard"]
+    categories = ["Bottle","Box","Bucket","Camera","Cart","Chair","Clock","CoffeeMachine",
+                  "Dishwasher","Dispenser","Display","Door","Eyeglasses","Faucet","FoldingChair",
+                  "Globe","Kettle","Keyboard","KitchenPot","Knife","Lamp","Laptop","Lighter"]
+    categories = ["Microwave","Mouse","Oven","Pen","Phone","Pliers","Printer","Refrigerator",
+                  "Remote","Safe","Scissors","Stapler","StorageFurniture","Suitcase","Switch",
+                  "Table","Toaster","Toilet","TrashCan","USB","WashingMachine","Window"]
+    categories = ["WashingMachine","Window"]
+    categories = ["TrashCan"]
     for category in categories:
         stime = time.time()
         accs = []
@@ -93,13 +96,14 @@ if __name__ == "__main__":
         models = os.listdir(f"/data/ziqi/partnet-mobility/test/{category}") # list of models
         if len(models) >= 10:
             chosen = np.load(f"./data/img_sp/{category}/idxs.npy")
-            chosen_models = [models[i] for i in chosen]
+            chosen_models = [models[i] for i in chosen if models[i]!="10351"]
         else:
             chosen_models = models
         for model in chosen_models:
             acc, iou = Infer(f"/data/ziqi/partnet-mobility/test/{category}/{model}/pc.ply", category, model, partnete_meta[category], zero_shot=True, save_dir=f"./result_ps/{category}/{model}")
             accs.append(acc)
-            ious.append(iou)
+            if not np.isnan(iou):
+                ious.append(iou)
         mean_acc = np.mean(accs)
         mean_iou = np.mean(ious)
         print(f"{category} acc: {mean_acc}, iou: {mean_iou}")

@@ -20,10 +20,10 @@ def compute_iou(pred, gt):
         I = np.logical_and(pred==i, gt==i).sum()
         U = np.logical_or(pred==i, gt==i).sum()
         if U == 0:
-            iou = 1
+            pass
         else:
             iou = I / U
-        ious.append(iou)
+            ious.append(iou)
     mean_iou = np.mean(ious)
     return mean_iou
 
