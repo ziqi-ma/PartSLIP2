@@ -63,10 +63,11 @@ def gen_superpoint(xyz, rgb, visualize=False, save_dir=None,
     graph_nn["edge_weight"] = np.array(1. / (lambda_edge_weight + graph_nn["distances"] / np.mean(graph_nn["distances"]) + feat_dis / feat_dis.mean() - 0.3), dtype = 'float32')
     graph_nn["edge_weight"] = graph_nn["edge_weight"] * graph_nn["edge_weight"]
     components, _ = libcp.cutpursuit(features, graph_nn["source"], graph_nn["target"], graph_nn["edge_weight"], reg)
-
     components = merge_small_components(components, xyz)
-    components = np.array(components, dtype = 'object')
-
+    if len(components)>1 or len(components) == 0:
+        components = np.array(components, dtype = 'object')
+    else:
+        components = [list(com) for com in components] # so that it's the same format as above
     if visualize:
         visualize_superpoint(xyz, components, save_dir)
         np.save(f"{save_dir}/sp.npy", components)

@@ -7,7 +7,7 @@ from src.utils import normalize_pc
 from src.render_pc import render_pc
 from src.glip_inference import glip_inference, load_model
 from src.bbox2seg import bbox2seg
-from gen_sp import rotate_pts
+from gen_sp_shapenetpart import rotate_pts
 import time
 from segment_anything import sam_model_registry, SamPredictor
 import glob
@@ -59,17 +59,17 @@ def load_data_partseg(data_path, class_choice):
     seg_start_index = index_start[id_choice]
     all_rotation = torch.load(f"{data_path}/random_rotation_test.pt")[indices]
 
-    # take 5 random (but randomness is fixed)
-    random_indices = torch.load(f"./data/img_sp/{class_choice}/rand_idxs.pt")
-    sub_data = all_data[random_indices]
-    sub_seg = all_seg[random_indices]
-    sub_rotation = all_rotation[random_indices]
+    # get subset
+    subset_idxs = np.loadtxt(f"/data/ziqi/shapenetpart/{class_choice}_subsample.txt").astype(int)
+    sub_data = all_data[subset_idxs]
+    sub_seg = all_seg[subset_idxs]
+    sub_rotation = all_rotation[subset_idxs]
     sub_seg -= seg_start_index # labels start from 0
 
-    return sub_data, sub_seg, sub_rotation, random_indices
+    return sub_data, sub_seg, sub_rotation, subset_idxs.tolist()
 
 
-def Infer(category, model, xyz, rot, gt, part_names, zero_shot=True, save_dir="tmp"):
+def Infer(category, model, xyz, rot, gt, part_names, apply_rotation=False, zero_shot=True, save_dir="tmp"):
     if zero_shot:
         config ="GLIP/configs/glip_Swin_L.yaml"
         weight_path = "/data/ziqi/checkpoints/semseg3d/glip_large_model.pth"
@@ -79,10 +79,10 @@ def Infer(category, model, xyz, rot, gt, part_names, zero_shot=True, save_dir="t
         weight_path = "./models/%s.pth" % category
         print(f"-----Few-shot inference of -----{category}{model}")
         
-    print("[loading GLIP model...]")
+    #print("[loading GLIP model...]")
     glip_demo = load_model(config, weight_path)
 
-    print("[creating tmp dir...]")
+    #print("[creating tmp dir...]")
     if torch.cuda.is_available():
         device = torch.device("cuda:0")
         torch.cuda.set_device(device)
@@ -90,17 +90,20 @@ def Infer(category, model, xyz, rot, gt, part_names, zero_shot=True, save_dir="t
         device = torch.device("cpu")
     io = IO()
     os.makedirs(save_dir, exist_ok=True)
-    print(save_dir)
+    #print(save_dir)
     
-    print("[normalizing input point cloud...]")
+    #print("[normalizing input point cloud...]")
     rgb = torch.ones(xyz.shape)*0.5
     # apply rotation
-    rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
+    if apply_rotation:
+        rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
+    else:
+        rotated_pts = torch.tensor(xyz)
     
-    print("[rendering input point cloud...]")
+    #print("[rendering input point cloud...]")
     img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
     
-    print("[glip infrence...]")
+    #print("[glip infrence...]")
     SAM_ENCODER_VERSION = "vit_h"
     SAM_CHECKPOINT_PATH = "/data/ziqi/checkpoints/semseg3d/sam_vit_h_4b8939.pth"
     sam = sam_model_registry[SAM_ENCODER_VERSION](checkpoint=SAM_CHECKPOINT_PATH)
@@ -108,20 +111,21 @@ def Infer(category, model, xyz, rot, gt, part_names, zero_shot=True, save_dir="t
     sam_predictor = SamPredictor(sam)
     masks = glip_inference(glip_demo, save_dir, part_names, sam_predictor, num_views=num_views)
     
-    print('[generating superpoints...]')
+    #print('[generating superpoints...]')
     superpoint = np.load(f"/home/ziqi/Repos/PartSLIP2/data/img_sp/{category}/{model}/sp.npy", allow_pickle=True)
     
-    print('[converting bbox to 3D segmentation...]')
+    #print('[converting bbox to 3D segmentation...]')
     sem_seg, _ = bbox2seg(rotated_pts, superpoint, masks, screen_coords, pc_idx, part_names, save_dir, solve_instance_seg=False, num_view=num_views)
     acc = np.sum(sem_seg==gt)/gt.shape[0]
     iou = compute_iou(sem_seg, gt)
     
-    print(f"[finish!], acc {acc}, iou {iou}")
+    #print(f"[finish!], acc {acc}, iou {iou}")
     return acc, iou
     
 if __name__ == "__main__":
     stime = time.time()
-    categories = ["lamp"]
+    categories = ['airplane', 'bag', 'cap', 'car', 'chair','earphone','guitar','knife','lamp','laptop','motorbike',
+                  'mug','pistol','rocket','skateboard', 'table']
     cat2part = {'airplane': ['body','wing','tail','engine or frame'], 'bag': ['handle','body'], 'cap': ['panels or crown','visor or peak'], 
             'car': ['roof','hood','wheel or tire','body'],
             'chair': ['back','seat pad','leg','armrest'], 'earphone': ['earcup','headband','data wire'], 
@@ -137,7 +141,7 @@ if __name__ == "__main__":
         part_names = cat2part[category]
         xyz, label, rotation, sample_idxs = load_data_partseg('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            acc, iou = Infer(category, sample_idxs[i].item(), xyz[i,:,:], rotation[i,:], label[i,:], part_names, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i].item()}")
+            acc, iou = Infer(category, sample_idxs[i], xyz[i,:,:], rotation[i,:], label[i,:], part_names, apply_rotation=False, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
             accs.append(acc)
             ious.append(iou)
         mean_acc = np.mean(accs)
@@ -145,4 +149,3 @@ if __name__ == "__main__":
         print(f"{category} acc: {mean_acc}, iou: {mean_iou}")
     etime = time.time()
     print(etime-stime)
-        

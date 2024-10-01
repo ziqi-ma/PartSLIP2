@@ -7,8 +7,6 @@ from src.utils import normalize_pc
 from src.render_pc import render_pc
 from src.gen_superpoint import gen_superpoint
 import time
-import open3d as o3d
-
 
 def rotate_pts(pts, angles, device=None): # list of points as a tensor, N*3
 
@@ -41,9 +39,10 @@ def rotate_pts(pts, angles, device=None): # list of points as a tensor, N*3
     pts_new = torch.mm(pts, R.T)
     return pts_new
 
-def Infer(obj_dir, save_dir="tmp"):
+def Infer(input_pc_file, category, part_names, zero_shot=False, apply_rotation=False, save_dir="tmp"):
     
-    #print("[creating tmp dir...]")
+    print("[creating tmp dir...]")
+    obj_path = "/".join(input_pc_file.split("/")[:-1])
     if torch.cuda.is_available():
         device = torch.device("cuda:0")
         torch.cuda.set_device(device)
@@ -51,32 +50,35 @@ def Infer(obj_dir, save_dir="tmp"):
         device = torch.device("cpu")
     io = IO()
     os.makedirs(save_dir, exist_ok=True)
-
+    
     #print("[normalizing input point cloud...]")
-    pcd = o3d.io.read_point_cloud(f"{obj_dir}/points5000.pcd")
-    xyz = np.asarray(pcd.points)
-    xyz = xyz - xyz.mean(axis=0)
-    xyz = xyz / np.linalg.norm(xyz, ord=2, axis=1).max().item()
-    rgb = np.asarray(pcd.colors)
+    xyz, rgb = normalize_pc(input_pc_file, save_dir, io, device)
+    # apply rotation
+    rot = torch.load(f"{obj_path}/rand_rotation.pt")
+
+    if apply_rotation:
+        rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
+    else:
+        rotated_pts = torch.tensor(xyz).float()
     
-    # no need to apply rotation because the point cloud comes pre-rotated already for objaverse sets
-    #print("[rendering input point cloud...]")
-    img_dir, pc_idx, screen_coords, num_views = render_pc(torch.tensor(xyz).float(), rgb, save_dir, device)
+    img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
     
-    # print('[generating superpoints...]')
-    superpoint = gen_superpoint(torch.tensor(xyz).float(), rgb, visualize=True, save_dir=save_dir)
+    superpoint = gen_superpoint(rotated_pts, rgb, visualize=True, save_dir=save_dir)
     
     #print("[finish!]")
     
 if __name__ == "__main__":
-    stime = time.time()
-    split = "unseen"#seenclass"#"shapenetpart"#"unseen"
-    data_path = '/data/ziqi/objaverse/holdout'
-    class_uids = [uid for uid in os.listdir(f"{data_path}/{split}") if "delete" not in uid]
-    print(len(class_uids))
     
-    for class_uid in class_uids:  
-        obj_dir = f"{data_path}/{split}/{class_uid}"
-        Infer(obj_dir, save_dir=f"./data/img_sp/{class_uid}")
-    etime = time.time()
-    print(etime-stime)
+    partnete_meta = json.load(open("PartNetE_meta.json")) 
+    categories = partnete_meta.keys()
+
+    for category in categories:  
+        stime = time.time()
+        with open(f"/data/ziqi/partnet-mobility/test/{category}/subsampled_ids.txt", 'r') as f:
+            data_paths = f.read().splitlines()
+        for path in data_paths:
+            model = path.split("/")[-1]
+            Infer(f"{path}/pc.ply", category, partnete_meta[category], zero_shot=False, apply_rotation=True, save_dir=f"./data/img_sp/{category}/{model}")
+        etime = time.time()
+        print(category)
+        print(etime-stime)

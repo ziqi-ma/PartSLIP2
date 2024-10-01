@@ -42,7 +42,7 @@ def rotate_pts(pts, angles, device=None): # list of points as a tensor, N*3
     pts_new = torch.mm(pts, R.T)
     return pts_new
 
-def load_data_partseg(data_path, class_choice):
+def load_data_partseg_subset(data_path, class_choice):
     all_data = []
     all_label = []
     all_seg = []
@@ -74,41 +74,36 @@ def load_data_partseg(data_path, class_choice):
     seg_start_index = index_start[id_choice]
     all_rotation = torch.load(f"{data_path}/random_rotation_test.pt")[indices]
 
-    # take 5 random (but randomness is fixed)
-    random_indices = torch.randint(0, all_data.shape[0], (10,))
-    os.makedirs(f"./data/img_sp/{class_choice}", exist_ok=True)
-    torch.save(random_indices, f"./data/img_sp/{class_choice}/rand_idxs.pt")
-    sub_data = all_data[random_indices]
-    sub_seg = all_seg[random_indices]
-    sub_rotation = all_rotation[random_indices]
+    # get subset
+    subset_idxs = np.loadtxt(f"/data/ziqi/shapenetpart/{class_choice}_subsample.txt").astype(int)
+    sub_data = all_data[subset_idxs]
+    sub_seg = all_seg[subset_idxs]
+    sub_rotation = all_rotation[subset_idxs]
     sub_seg -= seg_start_index # labels start from 0
 
-    return sub_data, sub_seg, sub_rotation, random_indices
+    return sub_data, sub_seg, sub_rotation, subset_idxs.tolist()
     
 
-def Infer(xyz, rot, save_dir="tmp"):
+def Infer(xyz, rot, apply_rotation=False, save_dir="tmp"):
     
-    print("[creating tmp dir...]")
     if torch.cuda.is_available():
         device = torch.device("cuda:0")
         torch.cuda.set_device(device)
     else:
         device = torch.device("cpu")
-    io = IO()
     os.makedirs(save_dir, exist_ok=True)
     
-    print("[normalizing input point cloud...]")
     rgb = torch.ones(xyz.shape)*0.5
-    # apply rotation
-    rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
     
-    print("[rendering input point cloud...]")
-    img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
-    
-    # print('[generating superpoints...]')
-    superpoint = gen_superpoint(rotated_pts, rgb, visualize=True, save_dir=save_dir)
-    
-    print("[finish!]")
+    if apply_rotation:
+        # apply rotation
+        rotated_pts = rotate_pts(torch.tensor(xyz).float(), rot)
+        img_dir, pc_idx, screen_coords, num_views = render_pc(rotated_pts, rgb, save_dir, device)
+        superpoint = gen_superpoint(rotated_pts, rgb, visualize=True, save_dir=save_dir)
+    else:
+        img_dir, pc_idx, screen_coords, num_views = render_pc(torch.tensor(xyz), rgb, save_dir, device)
+        superpoint = gen_superpoint(torch.tensor(xyz), rgb, visualize=True, save_dir=save_dir)
+
     
 if __name__ == "__main__":
     
@@ -116,17 +111,13 @@ if __name__ == "__main__":
                        'earphone': 5, 'guitar': 6, 'knife': 7, 'lamp': 8, 'laptop': 9, 
                        'motorbike': 10, 'mug': 11, 'pistol': 12, 'rocket': 13, 'skateboard': 14, 'table': 15}
 
-    # categories = ["Camera", "Cart", "Dispenser", "Kettle"]
-    # categories = ["Bottle", "Chair", "Display", "Door"]
-    # categories = ["Knife", "Lamp", "StorageFurniture", "Table"]
-    # categories = ["KitchenPot", "Oven", "Suitcase", "Toaster"]
-    categories = ['chair','earphone','guitar','knife','lamp','laptop','motorbike',
-                  'mug','pistol','rocket','skateboard']
+    categories = ['airplane', 'bag', 'cap', 'car', 'chair','earphone','guitar','knife','lamp','laptop','motorbike',
+                  'mug','pistol','rocket','skateboard', 'table']
     for category in categories:  
         stime = time.time()
-        xyz, label, rotation, sample_idxs = load_data_partseg('/data/ziqi/shapenetpart', category)
+        xyz, label, rotation, sample_idxs = load_data_partseg_subset('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            Infer(xyz[i,:,:], rotation[i,:], save_dir=f"./data/img_sp/{category}/{sample_idxs[i].item()}")
+            Infer(xyz[i,:,:], rotation[i,:], apply_rotation=False, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
         etime = time.time()
         print(category)
         print(etime-stime)

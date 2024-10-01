@@ -1,0 +1,202 @@
+./result_ps/backpack_040089295e3a4ee684d4562a8fabce9f
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0, iou 0.0
+./result_ps/bench_c0951700653e4e978ef6199c38d07012
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0012, iou 0.0
+./result_ps/binoculars_885f1fe05f924bd995a89cfc3b6fe8a9
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2844, iou 0.1083236654776662
+./result_ps/birthday_cake_b62caa46c1c447b3ae78c3e18d47edca
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0218, iou 0.0
+./result_ps/boom_microphone_89d38b9c53f8496a922ce1199ca57afc
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0, iou 0.0
+./result_ps/bouquet_5794f6d3f7374cefa471122843b6574f
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.7502, iou 0.5001933266179477
+./result_ps/butterfly_80f8d9a6dadc411e89ca366cb0cfb0d9
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0506, iou 0.02207678883071553
+./result_ps/cellular_telephone_7f658554a3854ce28cae876c2a3fafd4
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.7716, iou 0.33496219270718747
+./result_ps/chinaware_720803dc59a54590be644537b462befa
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0002, iou 0.0
+./result_ps/clock_1cd732aee5564fd387959f41eb9540d8
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.1956, iou 0.0
+./result_ps/combination_lock_aa67b378bd9c4322a0bb1f98adab8174
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0008, iou 0.0
+./result_ps/cupcake_1e176d7d0c5d46c89efbbe483432d1c8
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0072, iou 0.0
+./result_ps/elk_df26b8155ac84c57a10f5451a5ac1a12
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.117, iou 0.09683490917522473
+./result_ps/fan_a38384a0fc40460e9cc75f0762b8cc52
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.453, iou 0.238012282063464
+./result_ps/flamingo_696ac60d4a2a4efcba04e9ce7a5cf6cd
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.747, iou 0.2755268065268065
+./result_ps/gift_wrap_2b608f2128b0492fad8a57e1340bea60
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0086, iou 0.0
+./result_ps/golfcart_3175a691aeb2421f881d8683ea06eb60
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.7286, iou 0.0
+./result_ps/lab_coat_a5c5df38dcc5428abd89a74ab824995a
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0142, iou 0.0
+./result_ps/octopus_(animal)_f354a051748b4f6db292df1d363e2d07
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2318, iou 0.26675913083680075
+./result_ps/penguin_157de95fa4014050a969a8361a83d366
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.1232, iou 0.03523045474063636
+./result_ps/piano_991b78e6d39049028f98b8a8a6d1d9b4
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3486, iou 0.0
+./result_ps/sail_f3bf7e1405744940a0729dcc491dcadb
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.5008, iou 0.24493184597782774
+./result_ps/sandal_(type_of_shoe)_236d43744d2e42db923b0dbd7ee0e911
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0008, iou 0.0
+./result_ps/sofa_736e3ea67480426da4013dbca5fb8d20
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3968, iou 0.0
+./result_ps/sunflower_eed0588360284db1bcd4af720c258c10
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2098, iou 0.3602094151535912
+./result_ps/television_set_4f72eca722a740408258920b2449059a
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.384, iou 0.08587418849339602
+./result_ps/tennis_racket_e5bc00cffa4c4aec84006affcad2cdb1
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3802, iou 0.15635046805959493
+./result_ps/thermos_bottle_f5d3d6ee6d564038982c4ec2c76c4443
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0022, iou 0.0
+./result_ps/tractor_(farm_equipment)_16d799890d6c499a8762677449b9e179
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.4562, iou 0.0
+./result_ps/traffic_light_ba5769116fe34c1ea2712242c4f2ca98
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3958, iou 0.17210773351160769
+./result_ps/turtle_7ede9c8eca704635a6649eeb53a6044a
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.5332, iou 0.18644622023486787
+./result_ps/unicycle_1147c87f17cb46f6b0b2ee2e6f5dd6b6
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2994, iou 0.08357541899441341
+./result_ps/watch_213e9c4168c44f138c43671e5d62a2fa
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0126, iou 0.0
+./result_ps/wheelchair_7242dc92501742cabc6edfc501e219a4
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.294, iou 0.021278413261969272
+./result_ps/windmill_13e4e3da76ae4750b9d7e6df88530d44
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0082, iou 0.0
+./result_ps/bunk_bed_7e5f290cf4474aba93979b6c7244f142
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3756, iou 0.0
+./result_ps/calculator_f0b1f7c17d70489888f5ae922169c0ce
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0002, iou 0.0
+./result_ps/snowman_f769c1ea1ce84566a3a9c0b5f4388c0f
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.5542, iou 0.20442829798038983
+./result_ps/car_automobile_33657ac0e044493daf495d45424ead7a
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.6588, iou 0.0
+./result_ps/apple_0176be079c2449e7aaebfb652910a854
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0, iou 0.0
+./result_ps/armor_cf2e364e14884a2c982a2964ac735b76
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0132, iou 0.0
+./result_ps/bookcase_97c1c0c9ec6e49b993b37efca14fa830
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0698, iou 0.0
+./result_ps/fire_extinguisher_dc429020e35e4fd88937d9e12614ea5c
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0434, iou 0.0
+./result_ps/fireplug_1a10ecd4e72746109ee29a8631ea4d70
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2586, iou 0.16656608328304165
+./result_ps/mushroom_33172c4e091e4af8bfa0071363ac6019
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.5276, iou 0.22253068857140246
+./result_ps/ring_65586b5f86b5481abb692b94ee709112
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2696, iou 0.22278225806451613
+./result_ps/shoe_c5c2133684f646e9940ddb2ff7f81334
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3106, iou 0.0
+./result_ps/spectacles_a4c0eaf66bf748c5a2a1d6bb595672c7
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.7596, iou 0.3850619558936335
+./result_ps/chair_e83dc29e69e94ca7954c0b25d52ea3b2
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0402, iou 0.010015608740894901
+./result_ps/lampshade_ed82ecb06ef9438fa83a2584b24d9f14
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.8482, iou 0.5845704595457901
+instance mean iou: 0.09969297225486771, instance mean acc: 0.26918400000000003
+1328.2634224891663

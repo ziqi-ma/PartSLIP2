@@ -1,0 +1,315 @@
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Bottle
+405.9286539554596
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Box
+448.48513007164
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Bucket
+384.9683268070221
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Camera
+402.2248754501343
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Cart
+250.4548408985138
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Chair
+241.62783575057983
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Clock
+320.8557574748993
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+CoffeeMachine
+370.0602948665619
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Dishwasher
+799.9325742721558
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Dispenser
+309.11321091651917
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Display
+413.80172300338745
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Door
+335.52197670936584
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Eyeglasses
+133.4341208934784
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Faucet
+146.30920433998108
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+FoldingChair
+231.89670825004578
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Globe
+277.1182677745819
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Kettle
+340.3962981700897
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Keyboard
+219.21445226669312
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+KitchenPot
+377.10015201568604
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Knife
+114.96253156661987
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Lamp
+50.46322560310364
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Laptop
+390.4325292110443
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Lighter
+273.479451417923
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Microwave
+657.4226891994476
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Mouse
+210.98913478851318
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Oven
+830.6248512268066
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Pen
+73.84694385528564
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Phone
+476.5950412750244
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Pliers
+110.25708055496216
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Printer
+399.6175014972687
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Refrigerator
+792.681743144989
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Remote
+325.35794401168823
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Safe
+821.0959351062775
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Scissors
+82.71270775794983
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Stapler
+243.00260496139526
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+StorageFurniture
+519.4590647220612
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Suitcase
+354.0300991535187
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Switch
+398.4085738658905
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Table
+463.9387662410736
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Toaster
+655.4620990753174
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Toilet
+332.62082171440125
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+TrashCan
+741.153234243393
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+USB
+243.28317880630493
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+WashingMachine
+914.4521117210388
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+[creating tmp dir...]
+Window
+326.0754454135895

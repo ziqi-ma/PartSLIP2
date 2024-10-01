@@ -5,7 +5,7 @@ from src.utils import normalize_pc
 import torch
 import numpy as np
 import json
-from gen_sp import rotate_pts
+from PartSLIP2.gen_sp_partnete import rotate_pts
 import time
 
 def test(input_pc_file, part_names, sp_dir, save_dir="tmp"):
