@@ -64,6 +64,11 @@ def Infer(obj_dir, class_uid, zero_shot=True, save_dir="tmp"):
     part_names = []
     for i in range(len(mapping)):
         part_names.append(mapping[str(i+1)]) # label starts from 1
+
+    # decorate
+    cat = " ".join(class_uid.split("_")[:-1])
+    part_names = [f"{part} of a {cat}" for part in part_names]
+    # the default is -1 so no need to provide an "other" label
     
     #print("[glip infrence...]")
     SAM_ENCODER_VERSION = "vit_h"
@@ -94,7 +99,7 @@ if __name__ == "__main__":
     acc_list = []
     for class_uid in class_uids:  
         obj_dir = f"{data_path}/{split}/{class_uid}"
-        cat = class_uid.split("_")[0]
+        cat = " ".join(class_uid.split("_")[:-1])
         acc, iou = Infer(obj_dir, class_uid, zero_shot=True, save_dir=f"./result_ps/{class_uid}")
         iou_list += [iou]
         acc_list += [acc]

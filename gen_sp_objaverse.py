@@ -70,7 +70,7 @@ def Infer(obj_dir, save_dir="tmp"):
     
 if __name__ == "__main__":
     stime = time.time()
-    split = "unseen"#seenclass"#"shapenetpart"#"unseen"
+    split = "unseen"#"seenclass"#"shapenetpart"#"unseen"
     data_path = '/data/ziqi/objaverse/holdout'
     class_uids = [uid for uid in os.listdir(f"{data_path}/{split}") if "delete" not in uid]
     print(len(class_uids))

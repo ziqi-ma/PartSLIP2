@@ -39,9 +39,9 @@ def rotate_pts(pts, angles, device=None): # list of points as a tensor, N*3
     pts_new = torch.mm(pts, R.T)
     return pts_new
 
-def Infer(input_pc_file, category, part_names, zero_shot=False, apply_rotation=False, save_dir="tmp"):
+def Infer(input_pc_file, apply_rotation=False, save_dir="tmp"):
     
-    print("[creating tmp dir...]")
+    #print("[creating tmp dir...]")
     obj_path = "/".join(input_pc_file.split("/")[:-1])
     if torch.cuda.is_available():
         device = torch.device("cuda:0")
@@ -78,7 +78,7 @@ if __name__ == "__main__":
             data_paths = f.read().splitlines()
         for path in data_paths:
             model = path.split("/")[-1]
-            Infer(f"{path}/pc.ply", category, partnete_meta[category], zero_shot=False, apply_rotation=True, save_dir=f"./data/img_sp/{category}/{model}")
+            Infer(f"{path}/pc.ply", apply_rotation=False, save_dir=f"./data/img_sp/{category}/{model}")
         etime = time.time()
         print(category)
         print(etime-stime)

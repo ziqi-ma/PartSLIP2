@@ -135,17 +135,22 @@ if __name__ == "__main__":
             'motorbike': ['gas tank','seat','wheel','handles or handlebars','light','engine or frame'], 'mug': ['handle', 'cup'], 
             'pistol': ['barrel', 'handle', 'trigger and guard'], 
             'rocket': ['body','fin','nose cone'], 'skateboard': ['wheel','deck','belt for foot'], 'table': ['desktop','leg or support','drawer']}
+    all_mious = []
     for category in categories:
         accs = []
         ious = []
         part_names = cat2part[category]
+        part_names = [f"{part} of a {category}" for part in part_names]
         xyz, label, rotation, sample_idxs = load_data_partseg('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            acc, iou = Infer(category, sample_idxs[i], xyz[i,:,:], rotation[i,:], label[i,:], part_names, apply_rotation=False, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
+            acc, iou = Infer(category, sample_idxs[i], xyz[i,:,:], rotation[i,:], label[i,:], part_names, apply_rotation=True, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
             accs.append(acc)
             ious.append(iou)
         mean_acc = np.mean(accs)
         mean_iou = np.mean(ious)
         print(f"{category} acc: {mean_acc}, iou: {mean_iou}")
+        all_mious.append(mean_iou)
+    all_mean_iou = np.mean(all_mious)
     etime = time.time()
     print(etime-stime)
+    print(all_mean_iou)

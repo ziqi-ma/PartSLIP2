@@ -95,7 +95,9 @@ if __name__ == "__main__":
             data_paths = f.read().splitlines()
         for path in data_paths:
             model = path.split("/")[-1]
-            acc, iou = Infer(f"/data/ziqi/partnet-mobility/test/{category}/{model}/pc.ply", category, model, partnete_meta[category], apply_rotation=True, zero_shot=True, save_dir=f"./result_ps/{category}/{model}")
+            part_names = partnete_meta[category]
+            part_names = [f"{part} of a {category}" for part in partnete_meta[category]]
+            acc, iou = Infer(f"/data/ziqi/partnet-mobility/test/{category}/{model}/pc.ply", category, model, part_names, apply_rotation=False, zero_shot=True, save_dir=f"./result_ps/{category}/{model}")
             accs.append(acc)
             if not np.isnan(iou):
                 ious.append(iou)
