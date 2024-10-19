@@ -117,7 +117,7 @@ if __name__ == "__main__":
         stime = time.time()
         xyz, label, rotation, sample_idxs = load_data_partseg_subset('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            Infer(xyz[i,:,:], rotation[i,:], apply_rotation=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
+            Infer(xyz[i,:,:], rotation[i,:], apply_rotation=False, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
         etime = time.time()
         print(category)
         print(etime-stime)

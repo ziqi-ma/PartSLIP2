@@ -6,10 +6,38 @@ semantic segmentation...
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0098, iou 0.0
+./result_ps/bag_51d4d60d40c6452c9e54e4aed5313c2f
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0006, iou 0.0
+./result_ps/bag_903490f82b774e569d467148ace66370
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0, iou 0.0
+./result_ps/cap_5206aa93bce448a8b936ce763cfc245d
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.001, iou 0.0
+./result_ps/cap_aed7e822412b49f4bd75a3d1e80143b2
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0, iou 0.0
+./result_ps/car_29496edf3dcc4dbdb57565726a514457
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.066, iou 0.0
+./result_ps/car_66d2656f9eb44aab84248f262a0b1228
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.1296, iou 0.0
 ./result_ps/chair_053039b95c314104b5fe0dfb19f43cb3
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0806, iou 0.0
+./result_ps/chair_b23ec9725c48494788d1d88104acbb4a
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.041, iou 0.0
 ./result_ps/earphone_726b0790815f4f8b8cba4ef0c87d97ca
 [rendering input point cloud...]
 semantic segmentation...
@@ -26,22 +54,38 @@ semantic segmentation...
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0102, iou 0.0
-./result_ps/knife_bceba859aa17428688eff6f21a13e271
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.4638, iou 0.4957026214009454
 ./result_ps/knife_340a3bed238f48b0aa169c38e1e75066
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0002, iou 0.0
+./result_ps/knife_bceba859aa17428688eff6f21a13e271
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.4638, iou 0.4933788979068774
 ./result_ps/lamp_4dff23e7a6d04f53a3dff42fd319e181
 [rendering input point cloud...]
 semantic segmentation...
-[finish!], acc 0.0982, iou 0.0
+[finish!], acc 0.0072, iou 0.0
 ./result_ps/lamp_a53fe1a211b74d9a84b27b9ad9ccc05c
 [rendering input point cloud...]
 semantic segmentation...
-[finish!], acc 0.319, iou 0.0
+[finish!], acc 0.1568, iou 0.0
+./result_ps/laptop_0c9b25af73464d978658dbf17c5ac4ab
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.4088, iou 0.0
+./result_ps/laptop_eeefe5b0c3534b96ba6c692e347b94a3
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.0248, iou 0.0
+./result_ps/motorbike_38404e2077ca4b209cd2f1db30541b94
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.2378, iou 0.0
+./result_ps/motorbike_dbf2139d6cfb47f1ab3fd2b32e2db09e
+[rendering input point cloud...]
+semantic segmentation...
+[finish!], acc 0.3628, iou 0.0
 ./result_ps/mug_52d54d64e2544ace8a41d33d2ee03fdc
 [rendering input point cloud...]
 semantic segmentation...
@@ -54,22 +98,10 @@ semantic segmentation...
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0026, iou 0.0
-./result_ps/skateboard_2a8d375f2aef42259c6b6814a3ab72a6
+./result_ps/pistol_f38f404c2c9c4b6f8bfc0f0356efd353
 [rendering input point cloud...]
 semantic segmentation...
-[finish!], acc 0.0672, iou 0.0
-./result_ps/skateboard_4b0f217a8b9043b781f23a271ceb2276
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.0794, iou 0.0
-./result_ps/table_3623d7ff740e4b969539008999eebcf3
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.0, iou 0.0
-./result_ps/table_1af6b48c4cf74957ad6ebcd8c5cf2ad9
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.0, iou 0.0
+[finish!], acc 0.5404, iou 0.0
 ./result_ps/rocket_fa6e126e5da54453b0d1ed3a4a78543a
 [rendering input point cloud...]
 semantic segmentation...
@@ -78,53 +110,21 @@ semantic segmentation...
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.001, iou 0.0
-./result_ps/chair_b23ec9725c48494788d1d88104acbb4a
+./result_ps/skateboard_2a8d375f2aef42259c6b6814a3ab72a6
 [rendering input point cloud...]
 semantic segmentation...
-[finish!], acc 0.041, iou 0.0
-./result_ps/pistol_f38f404c2c9c4b6f8bfc0f0356efd353
+[finish!], acc 0.0672, iou 0.0
+./result_ps/skateboard_4b0f217a8b9043b781f23a271ceb2276
 [rendering input point cloud...]
 semantic segmentation...
-[finish!], acc 0.5404, iou 0.0
-./result_ps/laptop_0c9b25af73464d978658dbf17c5ac4ab
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.4088, iou 0.0
-./result_ps/laptop_eeefe5b0c3534b96ba6c692e347b94a3
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.0248, iou 0.0
-./result_ps/car_66d2656f9eb44aab84248f262a0b1228
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.1296, iou 0.0
-./result_ps/car_29496edf3dcc4dbdb57565726a514457
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.066, iou 0.0
-./result_ps/cap_5206aa93bce448a8b936ce763cfc245d
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.001, iou 0.0
-./result_ps/cap_aed7e822412b49f4bd75a3d1e80143b2
+[finish!], acc 0.0794, iou 0.0
+./result_ps/table_1af6b48c4cf74957ad6ebcd8c5cf2ad9
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0, iou 0.0
-./result_ps/bag_51d4d60d40c6452c9e54e4aed5313c2f
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.0006, iou 0.0
-./result_ps/bag_903490f82b774e569d467148ace66370
+./result_ps/table_3623d7ff740e4b969539008999eebcf3
 [rendering input point cloud...]
 semantic segmentation...
 [finish!], acc 0.0, iou 0.0
-./result_ps/motorbike_38404e2077ca4b209cd2f1db30541b94
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.2378, iou 0.0
-./result_ps/motorbike_dbf2139d6cfb47f1ab3fd2b32e2db09e
-[rendering input point cloud...]
-semantic segmentation...
-[finish!], acc 0.3628, iou 0.0
-instance mean iou: 0.015490706918779544, instance mean acc: 0.09519999999999999
-746.8988881111145
+instance mean iou: 0.015418090559589918, instance mean acc: 0.08728749999999999
+554.7815368175507

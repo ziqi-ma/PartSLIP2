@@ -130,7 +130,7 @@ if __name__ == "__main__":
             'car': ['roof','hood','wheel or tire','body'],
             'chair': ['back','seat pad','leg','armrest'], 'earphone': ['earcup','headband','data wire'], 
             'guitar': ['head or tuners','neck','body'], 
-            'knife': ['blade', 'handle'], 'lamp': ['leg or wire','lampshade'], 
+            'knife': ['blade', 'handle'], 'lamp': ['base','lampshade', 'fixing bracket', 'stem'], 
             'laptop': ['keyboard','screen or monitor'], 
             'motorbike': ['gas tank','seat','wheel','handles or handlebars','light','engine or frame'], 'mug': ['handle', 'cup'], 
             'pistol': ['barrel', 'handle', 'trigger and guard'], 
@@ -143,7 +143,7 @@ if __name__ == "__main__":
         part_names = [f"{part} of a {category}" for part in part_names]
         xyz, label, rotation, sample_idxs = load_data_partseg('/data/ziqi/shapenetpart', category)
         for i in range(10):
-            acc, iou = Infer(category, sample_idxs[i], xyz[i,:,:], rotation[i,:], label[i,:], part_names, apply_rotation=True, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
+            acc, iou = Infer(category, sample_idxs[i], xyz[i,:,:], rotation[i,:], label[i,:], part_names, apply_rotation=False, zero_shot=True, save_dir=f"./data/img_sp/{category}/{sample_idxs[i]}")
             accs.append(acc)
             ious.append(iou)
         mean_acc = np.mean(accs)
